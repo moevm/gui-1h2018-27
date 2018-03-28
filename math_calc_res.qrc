@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>logo-kriz4.jpg</file>
+        <file>shutterstock_74111929.jpg</file>
+        <file>sigma.png</file>
+        <file>image67.png</file>
+        <file>integral.jpg</file>
+        <file>638px-WPint.svg.png</file>
+        <file>Cute-Ball-Help-icon.png</file>
+        <file>Определение интеграла.PNG</file>
+        <file>Геомсмысл.PNG</file>
+    </qresource>
+</RCC>

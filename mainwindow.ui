@@ -14,8 +14,8 @@
    <string>Может получится что-то норм</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="math_calc_res.qrc">
-    <normaloff>:/icons/sigma.png</normaloff>:/icons/sigma.png</iconset>
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/sigma.png</normaloff>:/images/sigma.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -52,10 +52,13 @@
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>178</width>
-            <height>100</height>
+            <height>130</height>
            </size>
           </property>
          </spacer>
@@ -114,7 +117,7 @@ QPushButton:pressed {
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="pushButton_matrix">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -138,7 +141,7 @@ QPushButton:pressed {
 }</string>
             </property>
             <property name="text">
-             <string>Доступно после обновления!</string>
+             <string>Матричные вычисления</string>
             </property>
            </widget>
           </item>
@@ -183,16 +186,16 @@ QPushButton:pressed {
   </widget>
   <action name="help">
    <property name="icon">
-    <iconset resource="math_calc_res.qrc">
+    <iconset>
      <normaloff>:/icons/Cute-Ball-Help-icon.png</normaloff>:/icons/Cute-Ball-Help-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Справка</string>
+    <string>О программе</string>
    </property>
   </action>
   <action name="close">
    <property name="icon">
-    <iconset resource="math_calc_res.qrc">
+    <iconset>
      <normaloff>:/icons/logo-kriz4.jpg</normaloff>:/icons/logo-kriz4.jpg</iconset>
    </property>
    <property name="text">
@@ -202,7 +205,7 @@ QPushButton:pressed {
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="math_calc_res.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>

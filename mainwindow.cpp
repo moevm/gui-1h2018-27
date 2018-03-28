@@ -5,7 +5,9 @@
 #include <QLabel>
 #include <QMovie>
 #include "integral.h"
+#include "matrix.h"
 #include <QMessageBox>
+#include "help.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,7 +32,16 @@ void MainWindow::on_pushButton_integral_clicked()
     new_integral->show();
 }
 
+
+
 void MainWindow::on_help_triggered()
 {
-    QMessageBox::about(this, "Справка", "Ей кто-то пользуется?! Если нет, то можно просто оставить это так?..");
+    help *new_help = new help;
+    new_help->show();
+}
+
+void MainWindow::on_pushButton_matrix_clicked()
+{
+    matrix *new_matrix = new matrix(this);
+    new_matrix->show();
 }

@@ -1,9 +1,5 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <QApplication>
-#include <QWidget>
-#include <QLabel>
-#include <QMovie>
 
 int main(int argc, char *argv[])
 {
