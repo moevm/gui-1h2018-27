@@ -18,6 +18,8 @@ public:
 private slots:
     void on_pushButton_clear_clicked();
 
+    void on_pushButton_det_5x5_clicked();
+
 private:
     Ui::matrix_det_5x5 *ui;
 };

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix det 3x3</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -346,6 +350,8 @@ QPushButton:pressed {
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -10,6 +10,11 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Matrix</string>
   </property>
@@ -102,7 +107,7 @@ QPushButton:pressed {
 }</string>
          </property>
          <property name="text">
-          <string>Вычислить определитель</string>
+          <string>    Вычислить определитель    </string>
          </property>
         </widget>
        </item>
@@ -121,6 +126,35 @@ QPushButton:pressed {
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Times New Roman</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+  background-color: rgb(215, 215, 215);
+  border: 1px solid gray;
+}
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #BEBEBE, stop: 1 #D7D7D7);
+}</string>
+         </property>
+         <property name="text">
+          <string>Вычислить обратную матрицу</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

@@ -73,7 +73,7 @@
     <rect>
      <x>416</x>
      <y>290</y>
-     <width>251</width>
+     <width>223</width>
      <height>41</height>
     </rect>
    </property>
@@ -160,7 +160,7 @@ QPushButton:pressed {
     <string>*пределы интегрирования могут принимать только численные значения</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>340</x>
@@ -202,7 +202,7 @@ background-color : white;</string>
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>340</x>
@@ -244,7 +244,7 @@ background-color : white;</string>
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -337,7 +337,7 @@ QPushButton:pressed {
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>760</x>
@@ -407,7 +407,7 @@ QPushButton:pressed {
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>416</x>
@@ -451,11 +451,14 @@ background-color : white;</string>
   </widget>
  </widget>
  <tabstops>
-  <tabstop>pushButton_help</tabstop>
   <tabstop>lineEdit_a</tabstop>
   <tabstop>lineEdit_b</tabstop>
+  <tabstop>write_integral</tabstop>
   <tabstop>pushButton_calculate</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_clear_limits</tabstop>
   <tabstop>pushButton_clear_res</tabstop>
+  <tabstop>pushButton_help</tabstop>
  </tabstops>
  <resources>
   <include location="icons.qrc"/>

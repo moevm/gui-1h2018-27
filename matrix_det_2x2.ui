@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix det 2x2</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QLabel {
 	qproperty-alignment: 'AlignVCenter | AlignCenter';
@@ -245,6 +249,8 @@ QPushButton:pressed {
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

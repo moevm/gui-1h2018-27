@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>500</height>
+    <width>800</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Matrix inverse</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>110</y>
+     <x>100</x>
+     <y>170</y>
      <width>601</width>
      <height>61</height>
     </rect>
@@ -55,7 +55,7 @@
      </spacer>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox_matrix_det">
+     <widget class="QComboBox" name="comboBox_matrix_inverse">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -115,33 +115,12 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="my_widget_matrix_det" native="true">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>190</y>
-     <width>461</width>
-     <height>271</height>
-    </rect>
-   </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>461</width>
-      <height>271</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
-   </widget>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>1</x>
      <y>1</y>
-     <width>900</width>
+     <width>800</width>
      <height>80</height>
     </rect>
    </property>

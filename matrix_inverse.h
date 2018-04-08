@@ -15,6 +15,9 @@ public:
     explicit matrix_inverse(QWidget *parent = 0);
     ~matrix_inverse();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::matrix_inverse *ui;
 };

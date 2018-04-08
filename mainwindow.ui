@@ -186,8 +186,8 @@ QPushButton:pressed {
   </widget>
   <action name="help">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/Cute-Ball-Help-icon.png</normaloff>:/icons/Cute-Ball-Help-icon.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/Cute-Ball-Help-icon.png</normaloff>:/images/Cute-Ball-Help-icon.png</iconset>
    </property>
    <property name="text">
     <string>О программе</string>
@@ -195,8 +195,8 @@ QPushButton:pressed {
   </action>
   <action name="close">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/logo-kriz4.jpg</normaloff>:/icons/logo-kriz4.jpg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/logo-kriz4.jpg</normaloff>:/images/logo-kriz4.jpg</iconset>
    </property>
    <property name="text">
     <string>Закрыть</string>

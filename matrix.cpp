@@ -25,3 +25,9 @@ void matrix::on_pushButton_clicked()
 {
     close();
 }
+
+void matrix::on_pushButton_2_clicked()
+{
+    matrix_inverse *new_matrix_inverse = new matrix_inverse(this);
+    new_matrix_inverse->show();
+}

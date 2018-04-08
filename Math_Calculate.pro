@@ -35,7 +35,11 @@ SOURCES += \
     matrix_det_4x4.cpp \
     matrix_det_5x5.cpp \
     matrix_inverse.cpp \
-    help.cpp
+    help.cpp \
+    matrix_inverse_2x2.cpp \
+    matrix_inverse_3x3.cpp \
+    matrix_inverse_4x4.cpp \
+    matrix_inverse_5x5.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +52,11 @@ HEADERS += \
     matrix_det_4x4.h \
     matrix_det_5x5.h \
     matrix_inverse.h \
-    help.h
+    help.h \
+    matrix_inverse_2x2.h \
+    matrix_inverse_3x3.h \
+    matrix_inverse_4x4.h \
+    matrix_inverse_5x5.h
 
 FORMS += \
     matrix.ui \
@@ -61,7 +69,11 @@ FORMS += \
     help_integral.ui \
     integral.ui \
     mainwindow.ui \
-    help.ui
+    help.ui \
+    matrix_inverse_2x2.ui \
+    matrix_inverse_3x3.ui \
+    matrix_inverse_4x4.ui \
+    matrix_inverse_5x5.ui
 
 RESOURCES += \
     icons.qrc

@@ -19,6 +19,7 @@ integral::integral(QWidget *parent) :
     QRegExp exp("[-]{0,1}[0-9]{1,9}[.]{0,1}[0-9]{1,6}");
     ui->lineEdit_a->setValidator(new QRegExpValidator(exp, this));
     ui->lineEdit_b->setValidator(new QRegExpValidator(exp, this));
+
 }
 
 integral::~integral()
@@ -48,7 +49,7 @@ void integral::on_pushButton_calculate_clicked()
 
 void integral::on_pushButton_clear_clicked()
 {
-    ui->write_integral->setText(" ");
+    ui->write_integral->setText("");
 }
 
 void integral::on_pushButton_help_clicked()
