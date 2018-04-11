@@ -77,3 +77,5 @@ FORMS += \
 
 RESOURCES += \
     icons.qrc
+
+

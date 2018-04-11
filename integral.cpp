@@ -42,9 +42,13 @@ void integral::on_pushButton_calculate_clicked()
 
     double res = Integral(strr, a, b);
 
-    QString new_res = QString::number(res);
-    ui->label_res->setText(new_res);
-
+    if(res == -1000){
+        QMessageBox::warning(this, "Error!", "Введите корректную функцию! Пример: sin(x)*x.");
+        ui->label_res->setText("Error");
+    } else {
+        QString new_res = QString::number(res);
+        ui->label_res->setText(new_res);
+    }
 }
 
 void integral::on_pushButton_clear_clicked()
@@ -69,230 +73,237 @@ void integral::on_pushButton_clear_limits_clicked()
     ui->lineEdit_b->setText("");
 }
 
-
-
-
 bool integral::is_number(char a){
     if ((a == '0') || (a == '1') || (a == '2') || (a == '3') || (a == '4') || (a == '5') || (a == '6') || (a == '7') || (a == '8') || (a == '9')){
-        return true;
-    }
-    else{
-        return false;
-    }
+            return true;
+        }
+        else{
+            return false;
+        }
 }
 
 bool integral::correctcont(char a){
-    if (is_number(a) || a == 'x' || a == '(' || a == 's' || a == 'c' || a == 't' || a == 'a' || a == 'l' || a == 'e') return true;
+    if (is_number(a) || a == 'x' || a == '(' || a == 's' || a == 'c' || a == 't' || a == 'a' || a == 'l' || a == 'e'|| a == ' ') return true;
     else return false;
 }
 
 double integral::value_at_a_point(std::string string, int& counter, double x, int& brct, bool& error){
     double res = 0;
 
-    while (counter < string.length()){ // !!!
+        while (counter < string.length()){ // !!!
 
-        if ((string[counter] >= '0') && (string[counter] <= '9')){
-            bool pointchecker = false;
-            int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
-            while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
+            if (is_number(string[counter])){
+                bool pointchecker = false;
+                int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
+                while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
 
-                if ((string[counter] == '.') && pointchecker){
+                    if ((string[counter] == '.') && pointchecker){
+                        error = true;
+                        return 0;
+                    }
+                    if (string[counter] == '.') pointchecker = true;
+                    if (string[counter] == ' '){
+                        error = true;
+                        return 0;
+                    };
+                    counter++;
+                }
+                res = stod(string.substr(subcounter, counter+1)); // ïàðñèì ÷èñëî â äàáë !!!
+            }
+            else if (string[counter] == '+'){
+                ++counter;
+                if (correctcont(string[counter]))  res = res + value_at_a_point(string, counter, x, brct, error);
+                else {
                     error = true;
                     return 0;
                 }
-                if (string[counter] == '.') pointchecker = true;
-                counter++;
             }
-            res = stod(string.substr(subcounter, counter+1)); // ïàðñèì ÷èñëî â äàáë !!!
-        }
 
-        if (string[counter] == '+'){
-            ++counter;
-            if (correctcont(string[counter]))  res = res + value_at_a_point(string, counter, x, brct, error);
-            else {
-                error = true;
-                return 0;
+            else if (string[counter] == '-'){
+                ++counter;
+                if (correctcont(string[counter]))  res = res - value_at_a_point(string, counter, x, brct, error);
+                else {
+                    error = true;
+                    return 0;
+                }
             }
-        }
 
-        if (string[counter] == '-'){
-            ++counter;
-            if (correctcont(string[counter]))  res = res - value_at_a_point(string, counter, x, brct, error);
-            else {
-                error = true;
-                return 0;
+            else if (string[counter] == '*'){
+                ++counter;
+                if (correctcont(string[counter])) { res = res * multiplication(string, counter, x, brct, error); }
+                else {
+                    error = true;
+                    return 0;
+                }
             }
-        }
 
-        if (string[counter] == '*'){
-            ++counter;
-            if (correctcont(string[counter])) { res = res * multiplication(string, counter, x, brct, error); }
-            else {
-                error = true;
-                return 0;
+            else if (string[counter] == '/'){
+                ++counter;
+                if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
+                else {
+                    error = true;
+                    return 0;
+                }
             }
-        }
 
-        if (string[counter] == '/'){
-            ++counter;
-            if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
-            else {
-                error = true;
-                return 0;
+            else if (string[counter] == '^'){
+                ++counter;
+                if (correctcont(string[counter]))  res = pow(res, degree(string, counter, x, brct, error));
+                else {
+                    error = true;
+                    return 0;
+                }
             }
-        }
 
-        if (string[counter] == '^'){
-            ++counter;
-            if (correctcont(string[counter]))  res = pow(res, degree(string, counter, x, brct, error));
-            else {
-                error = true;
-                return 0;
+            else if (string[counter] == '('){
+                counter++; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
+                ++brct;
             }
-        }
 
-        if (string[counter] == '('){
-            counter++; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
-            ++brct;
-        }
-
-        if (string[counter] == ')'){
-            if (brct <= 0) {
-                error = true;
-                return 0;
-            }
-            ++counter;
-            if (counter == string.length()){
-                --brct;
-                return res;
-            }
-            else{
-                if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
+            else if (string[counter] == ')'){
+                if (brct <= 0) {
+                    error = true;
+                    return 0;
+                }
+                ++counter;
+                if (counter == string.length()){
                     --brct;
                     return res;
                 }
                 else{
-                    error = true;
-                    return 0;
-                }
-            }
-        }
-
-        if (string[counter] == 's'){
-            ++counter;
-            if (string[counter] == 'q'){
-                if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
-                    counter = counter + 3;
-                    res = sqrt(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true;
-                    return 0;
-                }
-            }
-            if (string[counter] == 'i'){
-                if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = sin(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true;
-                    return 0;
+                    if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
+                        --brct;
+                        return res;
+                    }
+                    else{
+                        error = true;
+                        return 0;
+                    }
                 }
             }
 
-        }
-
-        if (string[counter] == 'c'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = cos(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 't'){
-            if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = tan(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'l'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = log(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'e'){
-            if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = exp(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'a'){
-            ++counter;
-            if (string[counter] == 's'){
-                if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                    counter = counter + 3;
-                    res = asin(value_at_a_point(string, counter, x, brct, error));
+            else if (string[counter] == 's'){
+                ++counter;
+                if (string[counter] == 'q'){
+                    if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
+                        counter = counter + 3;
+                        res = sqrt(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true;
+                        return 0;
+                    }
                 }
-                else{
-                    error = true; return 0;
+                if (string[counter] == 'i'){
+                    if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = sin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true;
+                        return 0;
+                    }
                 }
+
             }
-            if (string[counter] == 'c'){
+
+            else if (string[counter] == 'c'){
                 if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
                     counter = counter + 3;
-                    res = acos(value_at_a_point(string, counter, x, brct, error));
+                    res = cos(value_at_a_point(string, counter, x, brct, error));
                 }
                 else{
                     error = true; return 0;
                 }
             }
-            if (string[counter] == 't'){
+
+            else if (string[counter] == 't'){
                 if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
                     counter = counter + 3;
-                    res = atan(value_at_a_point(string, counter, x, brct, error));
+                    res = tan(value_at_a_point(string, counter, x, brct, error));
                 }
                 else{
                     error = true; return 0;
                 }
             }
-            if (string[counter] == 'b'){
-                if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = abs(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-        }
-        if (string[counter] == 'x'){
-            res = x;
-            counter++;
-        }
 
-        if (string[counter] == '.'){
-            error = true;
-            return 0;
+            else if (string[counter] == 'l'){
+                if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = log(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'e'){
+                if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = exp(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'a'){
+                ++counter;
+                if (string[counter] == 's'){
+                    if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = asin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+                if (string[counter] == 'c'){
+                    if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = acos(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+                if (string[counter] == 't'){
+                    if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = atan(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+                if (string[counter] == 'b'){
+                    if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = abs(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+            }
+            else if (string[counter] == 'x'){
+                res = x;
+                counter++;
+            }
+
+            else if (string[counter] == '.'){
+                error = true;
+                return 0;
+            }
+            else if (string[counter] == ' '){
+                counter++;
+            }
+            else {
+                error = true;
+                return 0;
+            }
         }
-    }
-    return res;
+        return res;
 }
 
 double integral::Integral(std::string string, double a, double b){
@@ -314,8 +325,7 @@ double integral::Integral(std::string string, double a, double b){
         help1 = value_at_a_point(string, counter, x[k - 1], brct, error);
         if (error)
         {
-            return QMessageBox::warning(this, "Error!", "Введите корректную функцию! Пример: sin(x)*x.");
-            //return -1000; // error
+            return -1000; // error
         }
         counter = 0;
         brct = 0;
@@ -331,442 +341,465 @@ double integral::Integral(std::string string, double a, double b){
 
 double integral::multiplication(std::string string, int& counter, double x, int& brct, bool& error){
     double res = 0;
-    bool pointchecker = false;
-    bool mmarker = false;
-    int subcounter = counter; // óêàçàòåëü íà êîíå÷ ÷èñëà
+        bool pointchecker = false;
+        bool mmarker = false;
+        int subcounter = counter; // óêàçàòåëü íà êîíå÷ ÷èñëà
 
-    while (counter < string.length()){
+        while (counter < string.length()){
 
-        if ((string[counter] >= '0') && (string[counter] <= '9')){
-            bool pointchecker = false;
-            int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
-            if (mmarker) subcounter--; // -
-            while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
+            if (is_number(string[counter])){
+                bool pointchecker = false;
+                int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
+                if (mmarker) subcounter--; // -
+                while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
 
-                if ((string[counter] == '.') && pointchecker){
-                    error = true; return 0;
+                    if ((string[counter] == '.') && pointchecker){
+                        error = true; return 0;
+                    }
+                    if (string[counter] == '.') pointchecker = true;
+                    if (string[counter] == ' '){
+                        error = true;
+                        return 0;
+                    };
+                    counter++;
                 }
-                if (string[counter] == '.') pointchecker = true;
-                counter++;
+                res = stod(string.substr(subcounter, counter+1)); // ïàðñèì ÷èñëî â äàáë !!!
             }
-            res = stod(string.substr(subcounter, counter+1)); // ïàðñèì ÷èñëî â äàáë !!!
-        }
 
-        if (string[counter] == '+'){
-            if (brct != 0){
-                ++counter;
-                if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
-                else {
-                    error = true; return 0;
+            else if (string[counter] == '+'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
                 }
+                else return res;
             }
-            else return res;
-        }
 
-        if (string[counter] == '-'){
-            if (brct != 0){
-                ++counter;
-                if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
-                else {
-                    error = true; return 0;
+            else if (string[counter] == '-'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
                 }
-            }
-            else return res;
-        }
-
-        if (string[counter] == '*'){
-            ++counter;
-            if (correctcont(string[counter])) res = res * multiplication(string, counter, x, brct, error);
-            else {
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == '/'){
-            ++counter;
-            if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
-            else {
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == '^'){
-            ++counter;
-            if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
-            else {
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == '('){
-            ++counter; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
-            ++brct;
-            if ((string[counter] == '-') && is_number(string[counter + 1])){
-                mmarker = true;
-            }
-        }
-
-        if (string[counter] == ')'){
-            if (brct <= 0) {
-                error = true;
-                return 0;
-            }
-            ++counter;
-            if (counter == string.length()){
-                --brct;
-                return res;
-            }
-            else{
-                if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
-                    --brct;
-                    return res;
-                }
-                else{
-                    error = true;
-                    return 0;
-                }
-            }
-        }
-
-        if (string[counter] == 's'){
-            ++counter;
-            if (string[counter] == 'q'){
-                if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
-                    counter = counter + 3;
-                    res = sqrt(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-            if (string[counter] == 'i'){
-                if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = sin(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-        }
-
-        if (string[counter] == 'c'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = cos(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 't'){
-            if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = tan(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'l'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = log(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'e'){
-            if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = exp(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'a'){
-            ++counter;
-            if (string[counter] == 's'){
-                if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                    counter = counter + 3;
-                    res = asin(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
+                else return res;
             }
 
-            if (string[counter] == 'c'){
-                if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
-                    counter = counter + 3;
-                    res = acos(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-
-            if (string[counter] == 't'){
-                if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                    counter = counter + 3;
-                    res = atan(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-
-            if (string[counter] == 'b'){
-                if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = abs(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
-                }
-            }
-        }
-
-        if (string[counter] == 'x'){
-            res = x;
-            counter++;
-        }
-        if (string[counter] == '.'){
-            error = true;
-            return 0;
-        }
-    }
-    return res;
-}
-
-double integral::degree(std::string string, int& counter, double x, int& brct, bool& error){
-    double res = 0;
-    bool pointchecker = false;
-    bool mmarker = false;
-    int subcounter = counter; // óêàçàòåëü íà êîíå÷ ÷èñëà
-
-    while (counter < string.length()){
-
-        if ((string[counter] >= '0') && (string[counter] <= '9')){
-            bool pointchecker = false;
-            int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
-            if (mmarker) subcounter--; // -
-            while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
-
-                if ((string[counter] == '.') && pointchecker){
-                    error = true; return 0;
-                }
-                if (string[counter] == '.') pointchecker = true;
-                counter++;
-            }
-            res = stod(string.substr(subcounter, counter + 1)); // ïàðñèì ÷èñëî â äàáë !!!
-        }
-
-        if (string[counter] == '+'){
-            if (brct != 0){
-                ++counter;
-                if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
-                else {
-                    error = true; return 0;
-                }
-            }
-            else return res;
-        }
-
-        if (string[counter] == '-'){
-            if (brct != 0){
-                ++counter;
-                if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
-                else {
-                    error = true; return 0;
-                }
-            }
-            else return res;
-        }
-
-        if (string[counter] == '*'){
-            if (brct != 0){
+            else if (string[counter] == '*'){
                 ++counter;
                 if (correctcont(string[counter])) res = res * multiplication(string, counter, x, brct, error);
                 else {
                     error = true; return 0;
                 }
             }
-            else return res;
-        }
 
-        if (string[counter] == '/'){
-            if (brct != 0){
+            else if (string[counter] == '/'){
                 ++counter;
                 if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
                 else {
                     error = true; return 0;
                 }
             }
-            else return res;
-        }
-        if (string[counter] == '^'){
-            ++counter;
-            if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
-            else {
-                error = true; return 0;
-            }
-        }
 
-        if (string[counter] == '('){
-            ++counter; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
-            ++brct;
-            if ((string[counter] == '-') && is_number(string[counter + 1])){
-                mmarker = true;
+            else if (string[counter] == '^'){
+                ++counter;
+                if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
+                else {
+                    error = true; return 0;
+                }
             }
-        }
 
-        if (string[counter] == ')'){
-            if (brct <= 0) {
-                error = true;
-                return 0;
+            else if (string[counter] == '('){
+                ++counter; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
+                ++brct;
+                if ((string[counter] == '-') && is_number(string[counter + 1])){
+                    mmarker = true;
+                }
             }
-            ++counter;
-            if (counter == string.length()){
-                --brct;
-                return res;
-            }
-            else{
-                if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
+
+            else if (string[counter] == ')'){
+                if (brct <= 0) {
+                    error = true;
+                    return 0;
+                }
+                ++counter;
+                if (counter == string.length()){
                     --brct;
                     return res;
                 }
                 else{
+                    if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
+                        --brct;
+                        return res;
+                    }
+                    else{
+                        error = true;
+                        return 0;
+                    }
+                }
+            }
+
+            else if (string[counter] == 's'){
+                ++counter;
+                if (string[counter] == 'q'){
+                    if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
+                        counter = counter + 3;
+                        res = sqrt(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+                if (string[counter] == 'i'){
+                    if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = sin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+            }
+
+            else if (string[counter] == 'c'){
+                if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = cos(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 't'){
+                if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = tan(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'l'){
+                if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = log(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'e'){
+                if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = exp(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'a'){
+                ++counter;
+                if (string[counter] == 's'){
+                    if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = asin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 'c'){
+                    if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = acos(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 't'){
+                    if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = atan(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 'b'){
+                    if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = abs(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+            }
+
+            else if (string[counter] == 'x'){
+                res = x;
+                counter++;
+            }
+            else if (string[counter] == '.'){
+                error = true;
+                return 0;
+            }
+            else if (string[counter] == ' '){
+                counter++;
+            }
+            else {
+                error = true;
+                return 0;
+            }
+        }
+        return res;
+}
+
+double integral::degree(std::string string, int& counter, double x, int& brct, bool& error){
+    double res = 0;
+        bool pointchecker = false;
+        bool mmarker = false;
+        int subcounter = counter; // óêàçàòåëü íà êîíå÷ ÷èñëà
+
+        while (counter < string.length()){
+
+            if (is_number(string[counter])){
+                bool pointchecker = false;
+                int subcounter = counter; // ñ÷åò÷èê äëÿ ñ÷èòûâàíèÿ ÷èñëà
+                if (mmarker) subcounter--; // -
+                while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
+
+                    if ((string[counter] == '.') && pointchecker){
+                        error = true; return 0;
+                    }
+                    if (string[counter] == '.') pointchecker = true;
+                    if (string[counter] == ' '){
+                        error = true;
+                        return 0;
+                    };
+                    counter++;
+                }
+                res = stod(string.substr(subcounter, counter + 1)); // ïàðñèì ÷èñëî â äàáë !!!
+            }
+
+            else if (string[counter] == '+'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
+                }
+                else return res;
+            }
+
+            else if (string[counter] == '-'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
+                }
+                else return res;
+            }
+
+            else if (string[counter] == '*'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res * multiplication(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
+                }
+                else return res;
+            }
+
+            else if (string[counter] == '/'){
+                if (brct != 0){
+                    ++counter;
+                    if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
+                    else {
+                        error = true; return 0;
+                    }
+                }
+                else return res;
+            }
+            else if (string[counter] == '^'){
+                ++counter;
+                if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
+                else {
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == '('){
+                ++counter; // âîçìîæíî ïîòîì äîáàâèòü ñ÷åò÷èê  ñêîáîê
+                ++brct;
+                if ((string[counter] == '-') && is_number(string[counter + 1])){
+                    mmarker = true;
+                }
+            }
+
+            else if (string[counter] == ')'){
+                if (brct <= 0) {
                     error = true;
                     return 0;
                 }
-            }
-        }
-
-        if (string[counter] == 's'){
-            ++counter;
-
-            if (string[counter] == 'q'){
-                if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
-                    counter = counter + 3;
-                    res = sqrt(value_at_a_point(string, counter, x, brct, error));
+                ++counter;
+                if (counter == string.length()){
+                    --brct;
+                    return res;
                 }
                 else{
-                    error = true; return 0;
+                    if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
+                        --brct;
+                        return res;
+                    }
+                    else{
+                        error = true;
+                        return 0;
+                    }
                 }
             }
 
-            if (string[counter] == 'i'){
-                if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = sin(value_at_a_point(string, counter, x, brct, error));
+            else if (string[counter] == 's'){
+                ++counter;
+
+                if (string[counter] == 'q'){
+                    if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
+                        counter = counter + 3;
+                        res = sqrt(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
                 }
-                else{
-                    error = true; return 0;
-                }
-            }
-        }
 
-        if (string[counter] == 'c'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = cos(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 't'){
-            if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = tan(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'l'){
-            if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = log(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'e'){
-            if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
-                counter = counter + 3;
-                res = exp(value_at_a_point(string, counter, x, brct, error));
-            }
-            else{
-                error = true; return 0;
-            }
-        }
-
-        if (string[counter] == 'a'){
-            ++counter;
-
-            if (string[counter] == 's'){
-                if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
-                    counter = counter + 3;
-                    res = asin(value_at_a_point(string, counter, x, brct, error));
-                }
-                else{
-                    error = true; return 0;
+                if (string[counter] == 'i'){
+                    if ((string[counter + 1] == 'n') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = sin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
                 }
             }
 
-            if (string[counter] == 'c'){
+            else if (string[counter] == 'c'){
                 if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
                     counter = counter + 3;
-                    res = acos(value_at_a_point(string, counter, x, brct, error));
+                    res = cos(value_at_a_point(string, counter, x, brct, error));
                 }
                 else{
                     error = true; return 0;
                 }
             }
 
-            if (string[counter] == 't'){
+            else if (string[counter] == 't'){
                 if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
                     counter = counter + 3;
-                    res = atan(value_at_a_point(string, counter, x, brct, error));
+                    res = tan(value_at_a_point(string, counter, x, brct, error));
                 }
                 else{
                     error = true; return 0;
                 }
             }
 
-            if (string[counter] == 'b'){
-                if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
-                    counter = counter + 2;
-                    res = abs(value_at_a_point(string, counter, x, brct, error));
+            else if (string[counter] == 'l'){
+                if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = log(value_at_a_point(string, counter, x, brct, error));
                 }
                 else{
                     error = true; return 0;
                 }
             }
-        }
 
-        if (string[counter] == 'x'){
-            res = x;
-            counter++;
+            else if (string[counter] == 'e'){
+                if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
+                    counter = counter + 3;
+                    res = exp(value_at_a_point(string, counter, x, brct, error));
+                }
+                else{
+                    error = true; return 0;
+                }
+            }
+
+            else if (string[counter] == 'a'){
+                ++counter;
+
+                if (string[counter] == 's'){
+                    if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = asin(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 'c'){
+                    if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = acos(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 't'){
+                    if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
+                        counter = counter + 3;
+                        res = atan(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+
+                if (string[counter] == 'b'){
+                    if ((string[counter + 1] == 's') && (string[counter + 2] == '(')){
+                        counter = counter + 2;
+                        res = abs(value_at_a_point(string, counter, x, brct, error));
+                    }
+                    else{
+                        error = true; return 0;
+                    }
+                }
+            }
+
+            else if (string[counter] == 'x'){
+                res = x;
+                counter++;
+            }
+            else if (string[counter] == '.'){
+                error = true;
+                return 0;
+            }
+
+            else if (string[counter] == ' '){
+                counter++;
+            }
+            else {
+                error = true;
+                return 0;
+            }
         }
-        if (string[counter] == '.'){
-            error = true;
-            return 0;
-        }
-    }
-    return res;
+        return res;
 }
 
 
