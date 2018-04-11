@@ -15,13 +15,18 @@ public:
     explicit matrix_det_2x2(QWidget *parent = 0);
     ~matrix_det_2x2();
 
+    void getMatrixWithoutRowAndCol(double **matrix, int size, int row, int col, double **newMatrix);
+    double matrixDet(double **matrix, int size);
+
 private slots:
     void on_pushButton_clear_clicked();
 
     void on_pushButton_det_2x2_clicked();
 
+
 private:
     Ui::matrix_det_2x2 *ui;
+
 };
 
 #endif // MATRIX_DET_2X2_H

@@ -45,6 +45,64 @@ matrix_det_5x5::~matrix_det_5x5()
     delete ui;
 }
 
+void matrix_det_5x5::getMatrixWithoutRowAndCol(double **matrix, int size, int row, int col, double **newMatrix)
+{
+    int offsetRow = 0; //Ñìåùåíèå èíäåêñà ñòðîêè â ìàòðèöå
+        int offsetCol = 0; //Ñìåùåíèå èíäåêñà ñòîëáöà â ìàòðèöå
+        for (int i = 0; i < size - 1; i++) {
+            //Ïðîïóñòèòü row-óþ ñòðîêó
+            if (i == row) {
+                offsetRow = 1; //Êàê òîëüêî âñòðåòèëè ñòðîêó, êîòîðóþ íàäî ïðîïóñòèòü, äåëàåì ñìåùåíèå äëÿ èñõîäíîé ìàòðèöû
+            }
+
+            offsetCol = 0; //Îáíóëèòü ñìåùåíèå ñòîëáöà
+            for (int j = 0; j < size - 1; j++) {
+                //Ïðîïóñòèòü col-ûé ñòîëáåö
+                if (j == col) {
+                    offsetCol = 1; //Âñòðåòèëè íóæíûé ñòîëáåö, ïðîóñêàåì åãî ñìåùåíèåì
+                }
+                newMatrix[i][j] = matrix[i + offsetRow][j + offsetCol];
+            }
+        }
+}
+
+double matrix_det_5x5::matrixDet(double **matrix, int size)
+{
+    double det = 0;
+        int degree = 1;
+
+
+        if (size == 1) {
+            return matrix[0][0];
+        }
+        else if (size == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        }
+        else {
+            //Ìàòðèöà áåç ñòðîêè è ñòîëáöà
+            double **newMatrix = new double*[size - 1];
+            for (int i = 0; i < size - 1; i++) {
+                newMatrix[i] = new double[size - 1];
+            }
+
+            //Ðàñêëàäûâàåì ïî 0-îé ñòðîêå, öèêë áåæèò ïî ñòîëáöàì
+            for (int j = 0; j < size; j++) {
+                //Óäàëèòü èç ìàòðèöû i-þ ñòðîêó è j-ûé ñòîëáåö
+                //Ðåçóëüòàò â newMatrix
+                getMatrixWithoutRowAndCol(matrix, size, 0, j, newMatrix);
+                det = det + (degree * matrix[0][j] * matrixDet(newMatrix, size - 1));
+                degree = -degree;
+            }
+            //×èñòèì ïàìÿòü íà êàæäîì øàãå ðåêóðñèè(âàæíî!)
+            for (int i = 0; i < size - 1; i++) {
+                delete[] newMatrix[i];
+            }
+            delete[] newMatrix;
+        }
+
+        return det;
+}
+
 void matrix_det_5x5::on_pushButton_clear_clicked()
 {
 
@@ -114,7 +172,15 @@ void matrix_det_5x5::on_pushButton_det_5x5_clicked()
     if(ui->lineEdit_24->text().isEmpty()){ ui->lineEdit_24->setText("0"); }
     if(ui->lineEdit_25->text().isEmpty()){ ui->lineEdit_25->setText("0"); }
 
-    double matrix[5][5];
+
+    int dim = 5;
+
+    double **matrix = new double*[dim];
+    for(int i = 0; i < dim; i++)
+    {
+        matrix[i] = new double[dim];
+    }
+
     matrix[0][0] = (ui->lineEdit_1->text()).toDouble();
     matrix[0][1] = (ui->lineEdit_2->text()).toDouble();
     matrix[0][2] = (ui->lineEdit_3->text()).toDouble();
@@ -144,5 +210,9 @@ void matrix_det_5x5::on_pushButton_det_5x5_clicked()
     matrix[4][2] = (ui->lineEdit_23->text()).toDouble();
     matrix[4][3] = (ui->lineEdit_24->text()).toDouble();
     matrix[4][4] = (ui->lineEdit_25->text()).toDouble();
+
+    double det_5x5 = matrixDet(matrix, dim);
+    QString new_det_5x5 = QString::number(det_5x5);
+    ui->label_det_5x5_res->setText(new_det_5x5);
 
 }
