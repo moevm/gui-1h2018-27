@@ -19,7 +19,7 @@ bool is_number(char a){
 }
 
 bool correctcont(char a){
-	if (is_number(a) || a == 'x' || a == '(' || a == 's' || a == 'c' || a == 't' || a == 'a' || a == 'l' || a == 'e') return true;
+	if (is_number(a) || a == 'x' || a == '(' || a == 's' || a == 'c' || a == 't' || a == 'a' || a == 'l' || a == 'e'|| a == ' ') return true;
 	else return false;
 }
 
@@ -28,22 +28,25 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 
 	while (counter < string.length()){ // !!!
 
-		if ((string[counter] >= '0') && (string[counter] <= '9')){
+		if (is_number(string[counter])){
 			bool pointchecker = false;
 			int subcounter = counter; // счетчик для считывания числа
-			while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
+			while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
 
 				if ((string[counter] == '.') && pointchecker){
 					error = true;
 					return 0;
 				}
 				if (string[counter] == '.') pointchecker = true;
+				if (string[counter] == ' '){
+					error = true;
+					return 0;
+				};
 				counter++;
 			}
 			res = stod(string.substr(subcounter, counter+1)); // парсим число в дабл !!!
 		}	
-
-		if (string[counter] == '+'){
+		else if (string[counter] == '+'){
 			++counter;
 			if (correctcont(string[counter]))  res = res + value_at_a_point(string, counter, x, brct, error);
 			else {
@@ -52,7 +55,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == '-'){
+		else if (string[counter] == '-'){
 			++counter;
 			if (correctcont(string[counter]))  res = res - value_at_a_point(string, counter, x, brct, error);
 			else {
@@ -61,7 +64,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == '*'){
+		else if (string[counter] == '*'){
 			++counter;
 			if (correctcont(string[counter])) { res = res * multiplication(string, counter, x, brct, error); }
 			else {
@@ -70,7 +73,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == '/'){
+		else if (string[counter] == '/'){
 			++counter;
 			if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
 			else {
@@ -79,7 +82,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == '^'){
+		else if (string[counter] == '^'){
 			++counter;
 			if (correctcont(string[counter]))  res = pow(res, degree(string, counter, x, brct, error));
 			else {
@@ -88,12 +91,12 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == '('){
+		else if (string[counter] == '('){
 			counter++; // возможно потом добавить счетчик  скобок
 			++brct;
 		}
 
-		if (string[counter] == ')'){
+		else if (string[counter] == ')'){
 			if (brct <= 0) {
 				error = true;
 				return 0;
@@ -104,7 +107,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 				return res;
 			}
 			else{
-				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
+				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
 					--brct;
 					return res;
 				}
@@ -115,7 +118,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == 's'){
+		else if (string[counter] == 's'){
 			++counter;
 			if (string[counter] == 'q'){
 				if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
@@ -140,7 +143,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 		
 		}
 
-		if (string[counter] == 'c'){
+		else if (string[counter] == 'c'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = cos(value_at_a_point(string, counter, x, brct, error));
@@ -150,7 +153,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == 't'){
+		else if (string[counter] == 't'){
 			if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = tan(value_at_a_point(string, counter, x, brct, error));
@@ -160,7 +163,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == 'l'){
+		else if (string[counter] == 'l'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = log(value_at_a_point(string, counter, x, brct, error));
@@ -170,7 +173,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 
-		if (string[counter] == 'e'){
+		else if (string[counter] == 'e'){
 			if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = exp(value_at_a_point(string, counter, x, brct, error));
@@ -180,7 +183,7 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 			}
 		}
 		
-		if (string[counter] == 'a'){
+		else if (string[counter] == 'a'){
 			++counter;
 			if (string[counter] == 's'){
 				if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
@@ -219,12 +222,19 @@ double value_at_a_point(string string, int& counter, double x, int& brct, bool& 
 				}
 			}
 		}
-		if (string[counter] == 'x'){
+		else if (string[counter] == 'x'){
 			res = x;
 			counter++;
 		}
 
-		if (string[counter] == '.'){
+		else if (string[counter] == '.'){
+			error = true;
+			return 0;
+		}
+		else if (string[counter] == ' '){
+			counter++;
+		}
+		else {
 			error = true;
 			return 0;
 		}
@@ -240,22 +250,26 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 
 	while (counter < string.length()){
 
-		if ((string[counter] >= '0') && (string[counter] <= '9')){
+		if (is_number(string[counter])){
 			bool pointchecker = false;
 			int subcounter = counter; // счетчик для считывания числа
 			if (mmarker) subcounter--; // - 
-			while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
+			while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
 
 				if ((string[counter] == '.') && pointchecker){
 					error = true; return 0;
 				}
 				if (string[counter] == '.') pointchecker = true;
+				if (string[counter] == ' '){
+					error = true;
+					return 0;
+				};
 				counter++;
 			}
 			res = stod(string.substr(subcounter, counter+1)); // парсим число в дабл !!!
 		}
 
-		if (string[counter] == '+'){
+		else if (string[counter] == '+'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
@@ -266,7 +280,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			else return res;			
 		}
 			
-		if (string[counter] == '-'){
+		else if (string[counter] == '-'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
@@ -277,7 +291,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			else return res;
 		}
 
-		if (string[counter] == '*'){
+		else if (string[counter] == '*'){
 			++counter;
 			if (correctcont(string[counter])) res = res * multiplication(string, counter, x, brct, error);
 			else {
@@ -285,7 +299,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == '/'){
+		else if (string[counter] == '/'){
 			++counter;
 			if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
 			else {
@@ -293,7 +307,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == '^'){
+		else if (string[counter] == '^'){
 			++counter;
 			if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
 			else {
@@ -301,7 +315,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == '('){
+		else if (string[counter] == '('){
 			++counter; // возможно потом добавить счетчик  скобок
 			++brct;
 			if ((string[counter] == '-') && is_number(string[counter + 1])){
@@ -309,7 +323,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}		
 
-		if (string[counter] == ')'){
+		else if (string[counter] == ')'){
 			if (brct <= 0) {
 				error = true;
 				return 0;
@@ -320,7 +334,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 				return res;
 			}
 			else{
-				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
+				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
 					--brct;
 					return res;
 				}
@@ -331,7 +345,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 's'){
+		else if (string[counter] == 's'){
 			++counter;
 			if (string[counter] == 'q'){
 				if ((string[counter + 1] == 'r') && (string[counter + 2] == 't') && (string[counter + 3]) == '('){
@@ -353,7 +367,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 'c'){
+		else if (string[counter] == 'c'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = cos(value_at_a_point(string, counter, x, brct, error));
@@ -363,7 +377,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 		
-		if (string[counter] == 't'){
+		else if (string[counter] == 't'){
 			if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = tan(value_at_a_point(string, counter, x, brct, error));
@@ -373,7 +387,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 'l'){
+		else if (string[counter] == 'l'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = log(value_at_a_point(string, counter, x, brct, error));
@@ -383,7 +397,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 'e'){
+		else if (string[counter] == 'e'){
 			if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = exp(value_at_a_point(string, counter, x, brct, error));
@@ -393,7 +407,7 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 'a'){
+		else if (string[counter] == 'a'){
 			++counter;
 			if (string[counter] == 's'){
 				if ((string[counter + 1] == 'i') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
@@ -436,11 +450,18 @@ double multiplication(string string, int& counter, double x, int& brct, bool& er
 			}
 		}
 
-		if (string[counter] == 'x'){
+		else if (string[counter] == 'x'){
 			res = x;
 			counter++;
 		}
-		if (string[counter] == '.'){
+		else if (string[counter] == '.'){
+			error = true;
+			return 0;
+		}
+		else if (string[counter] == ' '){
+			counter++;
+		}
+		else {
 			error = true;
 			return 0;
 		}
@@ -456,22 +477,26 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 
 	while (counter < string.length()){
 
-		if ((string[counter] >= '0') && (string[counter] <= '9')){
+		if (is_number(string[counter])){
 			bool pointchecker = false;
 			int subcounter = counter; // счетчик для считывания числа
 			if (mmarker) subcounter--; // - 
-			while (((string[counter] >= '0') && (string[counter] <= '9')) || (string[counter] == '.')){ // !!!!
+			while ((is_number(string[counter])) || (string[counter] == '.') || (string[counter] == ' ')){ // !!!!
 
 				if ((string[counter] == '.') && pointchecker){
 					error = true; return 0;
 				}
 				if (string[counter] == '.') pointchecker = true;
+				if (string[counter] == ' '){
+					error = true;
+					return 0;
+				};
 				counter++;
 			}
 			res = stod(string.substr(subcounter, counter + 1)); // парсим число в дабл !!!
 		}
 
-		if (string[counter] == '+'){
+		else if (string[counter] == '+'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res + value_at_a_point(string, counter, x, brct, error);
@@ -482,7 +507,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			else return res;
 		}
 
-		if (string[counter] == '-'){
+		else if (string[counter] == '-'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res - value_at_a_point(string, counter, x, brct, error);
@@ -493,7 +518,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			else return res;
 		}
 
-		if (string[counter] == '*'){
+		else if (string[counter] == '*'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res * multiplication(string, counter, x, brct, error);
@@ -504,7 +529,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			else return res;
 		}
 
-		if (string[counter] == '/'){
+		else if (string[counter] == '/'){
 			if (brct != 0){
 				++counter;
 				if (correctcont(string[counter])) res = res / multiplication(string, counter, x, brct, error);
@@ -514,7 +539,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 			else return res;
 		}
-		if (string[counter] == '^'){
+		else if (string[counter] == '^'){
 			++counter;
 			if (correctcont(string[counter])) res = pow(res, degree(string, counter, x, brct, error));
 			else {
@@ -522,7 +547,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == '('){
+		else if (string[counter] == '('){
 			++counter; // возможно потом добавить счетчик  скобок
 			++brct;
 			if ((string[counter] == '-') && is_number(string[counter + 1])){
@@ -530,7 +555,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == ')'){
+		else if (string[counter] == ')'){
 			if (brct <= 0) {
 				error = true;
 				return 0;
@@ -541,7 +566,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 				return res;
 			}
 			else{
-				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^'){
+				if (string[counter] == '+' || string[counter] == '-' || string[counter] == '*' || string[counter] == '/' || string[counter] == '^' || string[counter] == ' '){
 					--brct;
 					return res;
 				}
@@ -552,7 +577,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 's'){
+		else if (string[counter] == 's'){
 			++counter;
 
 			if (string[counter] == 'q'){
@@ -576,7 +601,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 'c'){
+		else if (string[counter] == 'c'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 's') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = cos(value_at_a_point(string, counter, x, brct, error));
@@ -586,7 +611,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 't'){
+		else if (string[counter] == 't'){
 			if ((string[counter + 1] == 'a') && (string[counter + 2] == 'n') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = tan(value_at_a_point(string, counter, x, brct, error));
@@ -596,7 +621,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 'l'){
+		else if (string[counter] == 'l'){
 			if ((string[counter + 1] == 'o') && (string[counter + 2] == 'g') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = log(value_at_a_point(string, counter, x, brct, error));
@@ -606,7 +631,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 'e'){
+		else if (string[counter] == 'e'){
 			if ((string[counter + 1] == 'x') && (string[counter + 2] == 'p') && (string[counter + 3] == '(')){
 				counter = counter + 3;
 				res = exp(value_at_a_point(string, counter, x, brct, error));
@@ -616,7 +641,7 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 'a'){
+		else if (string[counter] == 'a'){
 			++counter;
 
 			if (string[counter] == 's'){
@@ -660,11 +685,19 @@ double degree(string string, int& counter, double x, int& brct, bool& error){
 			}
 		}
 
-		if (string[counter] == 'x'){
+		else if (string[counter] == 'x'){
 			res = x;
 			counter++;
 		}
-		if (string[counter] == '.'){
+		else if (string[counter] == '.'){
+			error = true;
+			return 0;
+		}
+
+		else if (string[counter] == ' '){
+			counter++;
+		}
+		else {
 			error = true;
 			return 0;
 		}
