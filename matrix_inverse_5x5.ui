@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix inverse 5x5</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -43,11 +47,11 @@
     <string>Матрица 5x5</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_det_5x5">
+  <widget class="QPushButton" name="pushButton_inverse_5x5">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>360</y>
+     <x>300</x>
+     <y>340</y>
      <width>111</width>
      <height>31</height>
     </rect>
@@ -77,8 +81,8 @@ QPushButton:pressed {
   <widget class="QPushButton" name="pushButton_clear">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>360</y>
+     <x>120</x>
+     <y>340</y>
      <width>171</width>
      <height>31</height>
     </rect>
@@ -609,8 +613,8 @@ QPushButton:pressed {
   <widget class="QPushButton" name="pushButton_clear_res">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>350</y>
+     <x>650</x>
+     <y>340</y>
      <width>171</width>
      <height>31</height>
     </rect>
@@ -694,7 +698,7 @@ QPushButton:pressed {
      <x>530</x>
      <y>130</y>
      <width>401</width>
-     <height>202</height>
+     <height>182</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -882,7 +886,7 @@ background-color : white;</string>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>10</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -1071,7 +1075,7 @@ background-color : white;</string>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>10</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -1260,7 +1264,7 @@ background-color : white;</string>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>10</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -1449,7 +1453,7 @@ background-color : white;</string>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>10</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -1723,6 +1727,38 @@ background-color : white;</string>
    </property>
   </widget>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>lineEdit_1</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>lineEdit_8</tabstop>
+  <tabstop>lineEdit_9</tabstop>
+  <tabstop>lineEdit_10</tabstop>
+  <tabstop>lineEdit_11</tabstop>
+  <tabstop>lineEdit_12</tabstop>
+  <tabstop>lineEdit_13</tabstop>
+  <tabstop>lineEdit_14</tabstop>
+  <tabstop>lineEdit_15</tabstop>
+  <tabstop>lineEdit_16</tabstop>
+  <tabstop>lineEdit_17</tabstop>
+  <tabstop>lineEdit_18</tabstop>
+  <tabstop>lineEdit_19</tabstop>
+  <tabstop>lineEdit_20</tabstop>
+  <tabstop>lineEdit_21</tabstop>
+  <tabstop>lineEdit_22</tabstop>
+  <tabstop>lineEdit_23</tabstop>
+  <tabstop>lineEdit_24</tabstop>
+  <tabstop>lineEdit_25</tabstop>
+  <tabstop>pushButton_inverse_5x5</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_clear_res</tabstop>
+ </tabstops>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

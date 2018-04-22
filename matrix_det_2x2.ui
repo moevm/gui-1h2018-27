@@ -249,6 +249,14 @@ QPushButton:pressed {
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_1</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>pushButton_det_2x2</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+ </tabstops>
  <resources>
   <include location="icons.qrc"/>
  </resources>

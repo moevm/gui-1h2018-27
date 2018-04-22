@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix inverse 3x3</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -332,7 +336,7 @@ QPushButton:pressed {
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_det_2x2">
+  <widget class="QPushButton" name="pushButton_inverse_3x3">
    <property name="geometry">
     <rect>
      <x>220</x>
@@ -478,12 +482,12 @@ background-color : white;</string>
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>13</height>
+        <height>5</height>
        </size>
       </property>
      </spacer>
@@ -593,12 +597,12 @@ background-color : white;</string>
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>13</height>
+        <height>5</height>
        </size>
       </property>
      </spacer>
@@ -817,6 +821,22 @@ background-color : white;</string>
    </property>
   </widget>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>lineEdit_1</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>lineEdit_8</tabstop>
+  <tabstop>lineEdit_9</tabstop>
+  <tabstop>pushButton_inverse_3x3</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_clear_res</tabstop>
+ </tabstops>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

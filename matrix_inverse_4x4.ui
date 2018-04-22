@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix inverse 4x4</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -67,7 +71,7 @@
     <string>A =</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_det_4x4">
+  <widget class="QPushButton" name="pushButton_inverse_4x4">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -522,7 +526,7 @@ QPushButton:pressed {
      <x>470</x>
      <y>130</y>
      <width>311</width>
-     <height>141</height>
+     <height>143</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -668,12 +672,12 @@ background-color : white;</string>
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>13</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -820,12 +824,12 @@ background-color : white;</string>
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>13</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -972,12 +976,12 @@ background-color : white;</string>
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>186</width>
-        <height>13</height>
+        <height>2</height>
        </size>
       </property>
      </spacer>
@@ -1214,6 +1218,29 @@ background-color : white;</string>
    </property>
   </widget>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>lineEdit_1</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>lineEdit_8</tabstop>
+  <tabstop>lineEdit_9</tabstop>
+  <tabstop>lineEdit_10</tabstop>
+  <tabstop>lineEdit_11</tabstop>
+  <tabstop>lineEdit_12</tabstop>
+  <tabstop>lineEdit_13</tabstop>
+  <tabstop>lineEdit_14</tabstop>
+  <tabstop>lineEdit_15</tabstop>
+  <tabstop>lineEdit_16</tabstop>
+  <tabstop>pushButton_inverse_4x4</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_clear_res</tabstop>
+ </tabstops>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

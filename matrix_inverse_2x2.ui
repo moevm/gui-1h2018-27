@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Matrix inverse 2x2</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/images/matritsa.png</normaloff>:/images/matritsa.png</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -91,7 +95,7 @@ QPushButton:pressed {
     <string>A =</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_det_2x2">
+  <widget class="QPushButton" name="pushButton_inverse_2x2">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -503,6 +507,17 @@ background-color : white;</string>
    </property>
   </widget>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>lineEdit_1</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>pushButton_inverse_2x2</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_clear_res</tabstop>
+ </tabstops>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

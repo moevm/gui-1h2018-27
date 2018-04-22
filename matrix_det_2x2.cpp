@@ -14,6 +14,7 @@ matrix_det_2x2::matrix_det_2x2(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->pushButton_det_2x2->setDefault(true);//принажатии кнопки enter, будет нажиматься ok
     QRegExp exp("[-]{0,1}[0-9]{1,4}[.]{0,1}[0-9]{1,5}");
     ui->lineEdit_1->setValidator(new QRegExpValidator(exp, this));
     ui->lineEdit_2->setValidator(new QRegExpValidator(exp, this));
@@ -29,59 +30,59 @@ matrix_det_2x2::~matrix_det_2x2()
 void matrix_det_2x2::getMatrixWithoutRowAndCol(double **matrix, int size, int row, int col, double **newMatrix)
 {
     int offsetRow = 0; //Ñìåùåíèå èíäåêñà ñòðîêè â ìàòðèöå
-        int offsetCol = 0; //Ñìåùåíèå èíäåêñà ñòîëáöà â ìàòðèöå
-        for (int i = 0; i < size - 1; i++) {
-            //Ïðîïóñòèòü row-óþ ñòðîêó
-            if (i == row) {
-                offsetRow = 1; //Êàê òîëüêî âñòðåòèëè ñòðîêó, êîòîðóþ íàäî ïðîïóñòèòü, äåëàåì ñìåùåíèå äëÿ èñõîäíîé ìàòðèöû
-            }
-
-            offsetCol = 0; //Îáíóëèòü ñìåùåíèå ñòîëáöà
-            for (int j = 0; j < size - 1; j++) {
-                //Ïðîïóñòèòü col-ûé ñòîëáåö
-                if (j == col) {
-                    offsetCol = 1; //Âñòðåòèëè íóæíûé ñòîëáåö, ïðîóñêàåì åãî ñìåùåíèåì
-                }
-                newMatrix[i][j] = matrix[i + offsetRow][j + offsetCol];
-            }
+    int offsetCol = 0; //Ñìåùåíèå èíäåêñà ñòîëáöà â ìàòðèöå
+    for (int i = 0; i < size - 1; i++) {
+        //Ïðîïóñòèòü row-óþ ñòðîêó
+        if (i == row) {
+            offsetRow = 1; //Êàê òîëüêî âñòðåòèëè ñòðîêó, êîòîðóþ íàäî ïðîïóñòèòü, äåëàåì ñìåùåíèå äëÿ èñõîäíîé ìàòðèöû
         }
+
+        offsetCol = 0; //Îáíóëèòü ñìåùåíèå ñòîëáöà
+        for (int j = 0; j < size - 1; j++) {
+            //Ïðîïóñòèòü col-ûé ñòîëáåö
+            if (j == col) {
+                offsetCol = 1; //Âñòðåòèëè íóæíûé ñòîëáåö, ïðîóñêàåì åãî ñìåùåíèåì
+            }
+            newMatrix[i][j] = matrix[i + offsetRow][j + offsetCol];
+        }
+    }
 }
 
 double matrix_det_2x2::matrixDet(double **matrix, int size)
 {
     double det = 0;
-        int degree = 1;
+    int degree = 1;
 
 
-        if (size == 1) {
-            return matrix[0][0];
-        }
-        else if (size == 2) {
-            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-        }
-        else {
-            //Ìàòðèöà áåç ñòðîêè è ñòîëáöà
-            double **newMatrix = new double*[size - 1];
-            for (int i = 0; i < size - 1; i++) {
-                newMatrix[i] = new double[size - 1];
-            }
-
-            //Ðàñêëàäûâàåì ïî 0-îé ñòðîêå, öèêë áåæèò ïî ñòîëáöàì
-            for (int j = 0; j < size; j++) {
-                //Óäàëèòü èç ìàòðèöû i-þ ñòðîêó è j-ûé ñòîëáåö
-                //Ðåçóëüòàò â newMatrix
-                getMatrixWithoutRowAndCol(matrix, size, 0, j, newMatrix);
-                det = det + (degree * matrix[0][j] * matrixDet(newMatrix, size - 1));
-                degree = -degree;
-            }
-            //×èñòèì ïàìÿòü íà êàæäîì øàãå ðåêóðñèè(âàæíî!)
-            for (int i = 0; i < size - 1; i++) {
-                delete[] newMatrix[i];
-            }
-            delete[] newMatrix;
+    if (size == 1) {
+        return matrix[0][0];
+    }
+    else if (size == 2) {
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    }
+    else {
+        //Ìàòðèöà áåç ñòðîêè è ñòîëáöà
+        double **newMatrix = new double*[size - 1];
+        for (int i = 0; i < size - 1; i++) {
+            newMatrix[i] = new double[size - 1];
         }
 
-        return det;
+        //Ðàñêëàäûâàåì ïî 0-îé ñòðîêå, öèêë áåæèò ïî ñòîëáöàì
+        for (int j = 0; j < size; j++) {
+            //Óäàëèòü èç ìàòðèöû i-þ ñòðîêó è j-ûé ñòîëáåö
+            //Ðåçóëüòàò â newMatrix
+            getMatrixWithoutRowAndCol(matrix, size, 0, j, newMatrix);
+            det = det + (degree * matrix[0][j] * matrixDet(newMatrix, size - 1));
+            degree = -degree;
+        }
+        //×èñòèì ïàìÿòü íà êàæäîì øàãå ðåêóðñèè(âàæíî!)
+        for (int i = 0; i < size - 1; i++) {
+            delete[] newMatrix[i];
+        }
+        delete[] newMatrix;
+    }
+
+    return det;
 }
 
 
