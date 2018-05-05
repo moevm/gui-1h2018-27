@@ -2,6 +2,7 @@
 #include "ui_matrix.h"
 #include "matrix_det.h"
 #include "matrix_inverse.h"
+#include "matrix_multiplication.h"
 
 matrix::matrix(QWidget *parent) :
     QDialog(parent),
@@ -30,4 +31,10 @@ void matrix::on_pushButton_2_clicked()
 {
     matrix_inverse *new_matrix_inverse = new matrix_inverse(this);
     new_matrix_inverse->show();
+}
+
+void matrix::on_pushButton_3_clicked()
+{
+    matrix_multiplication *new_matrix_multiplication = new matrix_multiplication(this);
+    new_matrix_multiplication->show();
 }

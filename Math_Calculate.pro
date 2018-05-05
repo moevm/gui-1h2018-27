@@ -39,7 +39,8 @@ SOURCES += \
     matrix_inverse_2x2.cpp \
     matrix_inverse_3x3.cpp \
     matrix_inverse_4x4.cpp \
-    matrix_inverse_5x5.cpp
+    matrix_inverse_5x5.cpp \
+    matrix_multiplication.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,7 +57,8 @@ HEADERS += \
     matrix_inverse_2x2.h \
     matrix_inverse_3x3.h \
     matrix_inverse_4x4.h \
-    matrix_inverse_5x5.h
+    matrix_inverse_5x5.h \
+    matrix_multiplication.h
 
 FORMS += \
     matrix.ui \
@@ -73,7 +75,8 @@ FORMS += \
     matrix_inverse_2x2.ui \
     matrix_inverse_3x3.ui \
     matrix_inverse_4x4.ui \
-    matrix_inverse_5x5.ui
+    matrix_inverse_5x5.ui \
+    matrix_multiplication.ui
 
 RESOURCES += \
     icons.qrc
